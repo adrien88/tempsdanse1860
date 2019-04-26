@@ -5,7 +5,7 @@ ini_set('display_errors','1');
 /**
 *   Load config
 */
-$METASITE = parse_ini_file('config.ini',1)['site'];
+$SITE = parse_ini_file('config.ini',1)['site'];
 $DBSITE = parse_ini_file('config.ini',1)['database'];
 
 /**
@@ -19,10 +19,4 @@ spl_autoload_register(function ($class) {
 /**
 *   Defining route
 */
-if (!isset($_GET['page'])){
-    header('location:?pages/');
-    exit;
-}
-else {
-    Router::auto();
-}
+Router::auto($SITE['landing']);

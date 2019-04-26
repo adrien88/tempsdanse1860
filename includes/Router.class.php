@@ -8,10 +8,17 @@
 */
 class Router {
 
-    public static function auto()
+    public static function auto($defaultPath)
     {
         // get route
-        $URL = self::coreGetRoute(['module','function','args']);
+        if (
+            ($URL = self::coreGetRoute(['module','function','args'])) === false
+        ){
+            header('location:'.$defaultPath);
+            exit;
+        }
+
+        // get alias and include controler (or other content)
         $alias = RouterManager::get($URL['module']);
 
         if (file_exists('controler/'.$alias)) {
