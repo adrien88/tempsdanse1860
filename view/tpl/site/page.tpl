@@ -4,6 +4,8 @@
         <meta charset="$page_charset">
         <title>$page_title</title>
 
+        <!-- local stylesheet -->
+        <link rel="stylesheet" type="text/css" href="view/css/main.css">
     </head>
     <body>
         <header>
