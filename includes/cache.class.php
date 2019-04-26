@@ -6,7 +6,7 @@ class cache {
 
   public function __construct(
     $FILENAME,
-    array $OPTS=array(
+    array $OPTS = array(
       'DIR'=>'view/cache/',
       'TIMEOUT'=>3600
     )
@@ -17,7 +17,7 @@ class cache {
     $this->ELEM['DIR']=$DIR;
   }
 
-  public bind(array $PARAMS = []){
+  public function bind(array $PARAMS = []){
     if(!empty($PARAMS)):
       $this->ELEM=array_merge($this->ELEM,$PARAMS);
     endif;
