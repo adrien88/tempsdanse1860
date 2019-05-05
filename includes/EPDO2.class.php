@@ -244,8 +244,4 @@ class EPDO2 {
             return true;
         }
     }
-
-
-
-
 }
