@@ -11,7 +11,7 @@ class EPDO2 {
     private static $PDO = null;
 
     // basename
-    private static $basename = '';
+    private static $dbname = '';
 
     // table locking
     private static $tablename = '';
@@ -53,6 +53,8 @@ class EPDO2 {
                 ];
                 // instnce PDO in static var
                 self::$PDO = new PDO ($req,$DB['login'],$DB['passwd'],$options);
+                self::$dbname = $DB['name'];
+
                 unset($DB);
             }
             catch (PDOException $e){
@@ -92,7 +94,18 @@ class EPDO2 {
     }
 
 
-    //
+    /** __________________________________________________________________________________
+    *   get table list
+    *   @param : tablename
+    *   @return success:array (basic array list of tables names)
+    *   @return  error:false
+    */
+    final public static function tableList() {
+        $dbname = self::$dbname;
+        $req = "SELECT TABLE_NAME  FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA='".$dbname."';";
+        $list = self::$PDO->query($req);
+        return $list->fetchAll();
+    }
 
     /** __________________________________________________________________________________
     *   test if table exists
@@ -101,15 +114,57 @@ class EPDO2 {
     *   @return error:false
     */
     final public static function ifTableExists($tablename) {
-        $req = "SELECT TABLE_NAME  FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA='$basename';";
-        $list = $this->query($req);
-        if(in_array($tablename,$list)){
+        $list = self::tableList();
+        if(is_array($list) && in_array($tablename,$list[0])){
             return true;
         }
         else {
             return false;
         }
     }
+
+    /** __________________________________________________________________________________
+    *   get table structure
+    *   @param : colunms name
+    *   @return success:array
+    *   @return error:false
+    */
+    final public static function getStruct($fieldname = null) {
+        $req = "SHOW COLUMNS FROM ".self::getTable();
+        $list = self::$PDO->query($req);
+        if (!is_bool($list)) {
+            $data = $list->fetchAll();
+            unset($list);
+
+            foreach($data as $colnum => $colData) {
+                $data[$colnum]['Lenght'] = preg_replace('#.*\(([0-9]+)\)$#','$1',$colData['Type']);
+                $data[$colnum]['Type'] = preg_replace('#(.*)\([0-9]+\)$#','$1',$colData['Type']);
+
+                if (isset($fieldname)) {
+                    if ($colData['Field'] == $fieldname) {
+                        return $data[$colnum];
+                    }
+                }
+            }
+            return $data;
+        } else {
+            return false;
+        }
+    }
+
+
+    /** __________________________________________________________________________________
+    *   DATA manipulation methods
+    *
+    *   query ( request(string), [Fetch_Method_Const] ) : mixed
+    *
+    *   insert( data(array), [tablename(string)] ) : bool
+    *
+    *   update( data(array), condition(array), [tablename(string)] ) : bool
+    *
+    *   delete( condition(array), [tablename(string)] ) : bool
+    *
+    */
 
 
     /** __________________________________________________________________________________
@@ -141,7 +196,6 @@ class EPDO2 {
                         return $data[0];
                     }
                 }
-                // return isset($data[1]) ? $data : $data[0];
             }
             else{
                 unset($stat);
@@ -149,7 +203,6 @@ class EPDO2 {
             }
         }
     }
-
 
 
     /** __________________________________________________________________________________
@@ -178,8 +231,6 @@ class EPDO2 {
             return true;
         }
     }
-
-
 
     /** __________________________________________________________________________________
     *   Update data into table
@@ -244,4 +295,8 @@ class EPDO2 {
             return true;
         }
     }
+
+
+
+
 }
