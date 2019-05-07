@@ -17,7 +17,7 @@ switch($URL['function']) {
     // print a page
     default:
         if(
-            ($cache = new cache($URL['function'])) &&
+            ($cache = new cache($URL['function'],$CONFIG['cache'])) &&
             (($PAGE = $cache->load()) === false)
         ){
             $content = "page controler<br>";

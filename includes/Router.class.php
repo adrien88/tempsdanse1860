@@ -8,13 +8,15 @@
 */
 class Router {
 
-    public static function auto($defaultPath)
+    public static function auto()
     {
+        global $CONFIG;
+
         // get route
         if (
             ($URL = self::coreGetRoute(['module','function','args'])) === false
         ){
-            header('location:'.$defaultPath);
+            header('location:'.$CONFIG['site']['landing']);
             exit;
         }
 

@@ -5,16 +5,11 @@ class cache {
   public $ELEM = [];
 
   public function __construct(
-    $FILENAME,
-    array $OPTS = array(
-      'DIR'=>'view/cache/',
-      'TIMEOUT'=>3600
-    )
-  ){
-    extract($OPTS);
+      $FILENAME,
+      array $OPTS = [ 'dir'=>'view/cache/','timeout' => 0 ]
+    ){
     $this->ELEM['FILENAME']=$FILENAME;
-    $this->ELEM['TIMEOUT']=$TIMEOUT;
-    $this->ELEM['DIR']=$DIR;
+    $this->ELEM = array_merge($this->ELEM, $OPTS);
   }
 
   public function bind(array $PARAMS = []){
@@ -25,10 +20,10 @@ class cache {
 
   // load from data
   public function load(){
-    $path = $this->ELEM['DIR'].$this->ELEM['FILENAME'];
-    $timeout = $this->ELEM['TIMEOUT'];
+    $path = $this->ELEM['dir'].$this->ELEM['FILENAME'];
+    $timeout = $this->ELEM['timeout'];
     if(
-      file_exists($path) && filemtime($path+$timeout) < time()
+      file_exists($path) && (filemtime($path)+$timeout > time())
     ){
       return file_get_contents($path);
     }
@@ -38,12 +33,12 @@ class cache {
   }
 
   public function save($content = ''){
-    $path = $this->ELEM['DIR'].$this->ELEM['FILENAME'];
+    $path = $this->ELEM['dir'].$this->ELEM['FILENAME'];
     return file_put_contents($path, $content);
   }
 
   public function delete(){
-    $path = $this->ELEM['DIR'].$this->ELEM['FILENAME'];
+    $path = $this->ELEM['dir'].$this->ELEM['FILENAME'];
     if(file_exist($path)){
       unlink($path);
     }
