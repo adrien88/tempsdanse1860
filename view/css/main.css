@@ -1,4 +1,50 @@
+@font-face {
+  font-family: 'oldlondon';
+  src: url("../fonts/OldLondon.ttf") format("truetype"); }
+@font-face {
+  font-family: 'BebasNeue';
+  src: url("../fonts/BebasNeue-Regular.ttf") format("truetype"); }
 body {
-  background-color: steelblue; }
+  background-color: gray;
+  font-family: 'sans'; }
+  body h2, body h3, body h4 {
+    font-family: 'BebasNeue';
+    font-weight: bold; }
+
+nav {
+  background-color: #bbb; }
+
+header {
+  padding: 1em;
+  background-color: #eee;
+  background-image: src("");
+  background-attachment: fixed;
+  background-size: cover; }
+  header .header {
+    margin-top: 20vh; }
+    header .header h1 {
+      font-size: 4em;
+      font-family: 'oldlondon'; }
+
+main {
+  min-height: 30vh;
+  padding: 1em;
+  background-color: white; }
+
+footer {
+  background-color: #eee; }
+  footer .footertitle {
+    padding: 1em;
+    background-color: #bbb; }
+  footer .footerblock {
+    padding: 1em; }
+    footer .footerblock h3 {
+      font-size: 1.3em; }
+  footer h2 {
+    text-align: center;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    letter-spacing: .25em;
+    font-weight: lighter; }
 
 /*# sourceMappingURL=main.css.map */

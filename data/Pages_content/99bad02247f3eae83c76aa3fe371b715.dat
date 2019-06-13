@@ -1,0 +1,16 @@
+a:2:{s:3:"url";s:10:"login.html";s:7:"content";s:456:"
+<form id="loginform" class="" action="ajax.php" method="post">
+    <label for="login">Login</label><br>
+    <input type="text" name="login" value="" required><br>
+    <label for="password">Mot de passe</label><br>
+    <input type="password" name="password" value="" required>
+    <hr>
+    <input type="submit" name="soumettre" value="soumettre">
+    <input type="reset" name="effacer" value="effacer">
+</form>
+
+<script type="text/javascript">
+
+
+</script>
+";}
